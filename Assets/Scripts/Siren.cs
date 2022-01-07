@@ -8,7 +8,7 @@ public class Siren : MonoBehaviour
     [SerializeField] private AudioClip _audioClip;
 
     private AudioSource _audioSource;
-    private float _sirenVolume = 0;
+    private float _targetVolume = 0;
     private bool _thiefInHouse = false;
 
     private void Start()
@@ -21,23 +21,25 @@ public class Siren : MonoBehaviour
     {
         if (_thiefInHouse)
         {
-            if (_audioSource.volume == 0f)
-            {
-                _sirenVolume = 1f;
-            }
-            else if (_audioSource.volume == 1f)
-            {
-                _sirenVolume = 0f;
-            }
-
-            PlaySound();
+            StartCoroutine(PlaySound());
         }
     }
 
-    public void PlaySound()
+    private IEnumerator PlaySound()
     {
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _sirenVolume, Time.deltaTime);
-    }
+        if (_audioSource.volume == 0f)
+        {
+            _targetVolume = 1f;
+        }
+        else if (_audioSource.volume == 1f)
+        {
+            _targetVolume = 0f;
+        }
+
+        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _targetVolume, Time.deltaTime);
+
+        yield return null;
+    } 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -53,6 +55,7 @@ public class Siren : MonoBehaviour
         if (collision.TryGetComponent<PhysicsMovement>(out PhysicsMovement player))
         {
             _thiefInHouse = false;
+            StopCoroutine(PlaySound());
             _audioSource.Stop();
         }
     }
