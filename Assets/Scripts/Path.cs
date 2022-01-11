@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +5,10 @@ public class Path : MonoBehaviour
 {
     [SerializeField] private List<Transform> _points = new List<Transform>();
 
-    public List<Transform> Points { get => _points; set => _points = value; }
+    public List<Transform> Points { get => _points; private set => _points = value; }
 
-    [ContextMenu("GetWaypoints")]
-    private void GetWaypoints()
+    [ContextMenu("AssignWaypoints")]
+    private void AssignWaypoints()
     {
         Points.Clear();
         foreach (Transform child in transform)

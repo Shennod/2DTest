@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -30,7 +29,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < _points.Length; i++)
         {
             var spawnedEnemy = Instantiate(_enemy, _points[i].position, Quaternion.identity);
-            spawnedEnemy.Init(_levelPathes.GetPath0()); 
+            spawnedEnemy.Init(_levelPathes.GetFirstPath()); 
 
             yield return waitForSeconds;
         }
